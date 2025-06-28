@@ -16,7 +16,7 @@ export const testGeminiAPI = async () => {
     }
 };
 
-export const generateContent = async (prompt) => {
+export const generateStoryContent = async (prompt) => {
     try {
         const result = await model.generateContent(prompt);
         const response = await result.response;
