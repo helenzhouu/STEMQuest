@@ -77,7 +77,7 @@ const StoryScreen = () => {
         try {
             setIsGeneratingStory(true);
 
-            const minLoadingTime = useAI ? 1500 : 800;
+            const minLoadingTime = useAI ? 1000 : 100;
             const startTime = Date.now();
 
             performPageTurn();
@@ -176,7 +176,7 @@ const StoryScreen = () => {
         Alert.alert(
             'AI Mode ' + (!useAI ? 'Enabled' : 'Disabled'),
             !useAI
-                ? 'AI will now generate unique story paths! Make sure to set your EXPO_PUBLIC_GEMINI_API_KEY in your environment.'
+                ? 'AI will now generate unique story paths!'
                 : 'Using predefined story paths.'
         );
     };
