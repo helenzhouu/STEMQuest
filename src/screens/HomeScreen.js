@@ -16,22 +16,22 @@ const stories = [
     {
         id: 'space',
         title: 'Space Explorers',
-        img: require('../../assets/icon.png'), // Temporary placeholder
+        img: require('../../assets/space-explorers.png'),
     },
     {
         id: 'robot',
         title: 'Robo Rescue',
-        img: require('../../assets/icon.png'), // Temporary placeholder
+        img: require('../../assets/robo-rescue.png'), 
     },
     {
         id: 'math',
         title: 'Math Wizards',
-        img: require('../../assets/icon.png'), // Temporary placeholder
+        img: require('../../assets/math-wizards.png'), 
     },
     {
         id: 'nature2',
         title: 'Mystery in the Garden',
-        img: require('../../assets/icon.png'), // Temporary placeholder
+        img: require('../../assets/mystery-garden.png'),
     },
 ];
 
