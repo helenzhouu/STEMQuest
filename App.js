@@ -12,6 +12,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import HomeScreen from './src/screens/HomeScreen';
 import AvatarSelectionScreen from './src/screens/AvatarSelectionScreen';
 import StartScreen from './src/screens/StartScreen';
+import StoryScreen from './src/screens/StoryScreen';
 import { theme } from './src/styles/theme';
 import { store } from './src/store/store';
 
@@ -61,6 +62,11 @@ export default function App() {
                   fontSize: 18,
                 },
               })}
+            />
+            <Stack.Screen
+              name="Story"
+              component={StoryScreen}
+              options={{ headerShown: false }}
             />
           </Stack.Navigator>
           <StatusBar style="light" />
