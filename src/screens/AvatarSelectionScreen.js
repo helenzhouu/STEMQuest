@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, KeyboardAvoidingView, Platform, View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { SafeAreaView, KeyboardAvoidingView, Platform, View, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { Button, Card, Text, TextInput } from 'react-native-paper';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
@@ -19,10 +19,30 @@ const AvatarSelectionScreen = () => {
     const getAvatars = () => {
         if (storyType === 'space') {
             return [
-                { id: 'astronaut1', name: 'Captain Star', emoji: '👩‍🚀', description: 'Brave space explorer' },
-                { id: 'scientist1', name: 'Dr. Galaxy', emoji: '👩‍🔬', description: 'Brilliant astrophysicist' },
-                { id: 'engineer1', name: 'Engineer Nova', emoji: '👩‍💻', description: 'Space systems engineer' },
-                { id: 'pilot1', name: 'Pilot Comet', emoji: '👩‍✈️', description: 'Skilled space pilot' },
+                {
+                    id: 'astronaut1',
+                    name: 'Captain Star',
+                    image: require('../../assets/Astronaut.png'),
+                    description: 'Brave space explorer'
+                },
+                {
+                    id: 'scientist1',
+                    name: 'Dr. Galaxy',
+                    image: require('../../assets/LabGirl.png'),
+                    description: 'Brilliant astrophysicist'
+                },
+                {
+                    id: 'engineer1',
+                    name: 'Engineer Nova',
+                    image: require('../../assets/Engineer.png'),
+                    description: 'Space systems engineer'
+                },
+                {
+                    id: 'pilot1',
+                    name: 'Pilot Comet',
+                    image: require('../../assets/Pilot.png'),
+                    description: 'Skilled space pilot'
+                },
             ];
         }
         return [];
@@ -119,7 +139,7 @@ const AvatarSelectionScreen = () => {
                                     >
                                         <Card style={styles.card}>
                                             <Card.Content style={styles.cardContent}>
-                                                <Text style={styles.avatarEmoji}>{avatar.emoji}</Text>
+                                                <Image source={avatar.image} style={styles.avatarImage} />
                                                 <Text style={styles.avatarName}>{avatar.name}</Text>
                                                 <Text style={styles.avatarDescription}>{avatar.description}</Text>
                                             </Card.Content>
@@ -136,7 +156,7 @@ const AvatarSelectionScreen = () => {
                                         {storyType === 'space' ? 'Your Space Explorer' : 'Your Robot Engineer'}
                                     </Text>
                                     <View style={styles.previewDetails}>
-                                        <Text style={styles.previewEmoji}>{selectedAvatar.emoji}</Text>
+                                        <Image source={selectedAvatar.image} style={styles.previewImage} />
                                         <View style={styles.previewTextContainer}>
                                             <Text style={styles.previewName}>
                                                 {userName || 'Explorer'}
@@ -224,6 +244,12 @@ const styles = StyleSheet.create({
         fontSize: 40,
         marginBottom: spacing.sm,
     },
+    avatarImage: {
+        width: 60,
+        height: 60,
+        resizeMode: 'contain',
+        marginBottom: spacing.sm,
+    },
     avatarName: {
         ...typography.body,
         fontWeight: 'bold',
@@ -258,6 +284,12 @@ const styles = StyleSheet.create({
     },
     previewEmoji: {
         fontSize: 32,
+        marginRight: spacing.md,
+    },
+    previewImage: {
+        width: 50,
+        height: 50,
+        resizeMode: 'contain',
         marginRight: spacing.md,
     },
     previewTextContainer: {
