@@ -55,30 +55,81 @@ const StoryScreen = () => {
         }
     }, [story.currentNode]);
 
+    const performPageTurn = () => {
+        Animated.parallel([
+            Animated.timing(fadeAnim, {
+                toValue: 0,
+                duration: 300,
+                useNativeDriver: true,
+            }),
+            Animated.timing(slideAnim, {
+                toValue: -50,
+                duration: 300,
+                useNativeDriver: true,
+            })
+        ]).start(() => {
+            fadeAnim.setValue(1);
+            slideAnim.setValue(0);
+        });
+    };
+
     const handleChoice = async (choice) => {
         try {
             setIsGeneratingStory(true);
 
-            const nextNode = getStoryNode(choice.action, {
-                userName: user.name,
-                userAvatar: user.selectedAvatar,
-                storyType: storyType
-            });
+            const minLoadingTime = useAI ? 1500 : 800;
+            const startTime = Date.now();
 
-            if (nextNode) {
-                dispatch(makeChoice({ choiceId: choice.id, nodeData: nextNode }));
-            } else {
-                // Fallback to a generic continuation
-                const fallbackNode = {
-                    id: `fallback_${Date.now()}`,
-                    type: 'story',
-                    content: `Great choice, ${user.name}! Your adventure continues.`,
-                    choices: [
-                        { id: 'continue', text: 'Continue exploring', action: 'explore' },
-                        { id: 'new_mission', text: 'Start a new mission', action: 'restart' }
-                    ]
+            performPageTurn();
+            if (useAI) {
+                const context = {
+                    userChoice: choice,
+                    storyHistory: story.storyHistory,
+                    userName: user.name,
+                    userAvatar: user.selectedAvatar,
+                    currentStory: story.currentStory,
+                    storyType: storyType
                 };
-                dispatch(makeChoice({ choiceId: choice.id, nodeData: fallbackNode }));
+
+                const storyTheme = storyType === 'space' ? 'space exploration' : 'robot repair and engineering';
+                const prompt = `The user chose: "${choice.text}". Continue the ${storyTheme} story naturally, incorporating this choice and maintaining the educational STEM theme.`;
+
+                dispatch(generateStoryBranch({ prompt, context }));
+
+                const elapsedTime = Date.now() - startTime;
+                if (elapsedTime < minLoadingTime) {
+                    await new Promise(resolve => setTimeout(resolve, minLoadingTime - elapsedTime));
+                }
+            } else {
+                const nextNode = getStoryNode(choice.action, {
+                    userName: user.name,
+                    userAvatar: user.selectedAvatar,
+                    storyType: storyType
+                });
+
+                if (nextNode) {
+                    dispatch(makeChoice({ choiceId: choice.id, nodeData: nextNode }));
+                } else {
+                    const fallbackNode = {
+                        id: `fallback_${Date.now()}`,
+                        type: 'story',
+                        content: `Great choice, ${user.name}! Your adventure as ${user.selectedAvatar?.name} continues. ${storyType === 'space' ? 'The universe is full of mysteries waiting to be discovered!' : 'There are many engineering challenges to solve!'}`,
+                        choices: [
+                            { id: 'continue', text: 'Continue exploring', action: 'explore' },
+                            { id: 'new_mission', text: 'Start a new mission', action: 'restart' }
+                        ]
+                    };
+                    dispatch(makeChoice({ choiceId: choice.id, nodeData: fallbackNode }));
+                }
+
+                const elapsedTime = Date.now() - startTime;
+                if (elapsedTime < minLoadingTime) {
+                    await new Promise(resolve => setTimeout(resolve, minLoadingTime - elapsedTime));
+                }
+            }
+
+            if (isFirstSlide) {
+                setIsFirstSlide(false);
             }
 
         } catch (error) {
@@ -90,9 +141,10 @@ const StoryScreen = () => {
     };
 
     const handleRestart = () => {
+        const storyName = storyType === 'space' ? 'space mission' : 'robot adventure';
         Alert.alert(
             'New Adventure?',
-            'Are you sure you want to start a new space mission?',
+            `Are you sure you want to start a new ${storyName}?`,
             [
                 { text: 'Cancel', style: 'cancel' },
                 {
@@ -108,7 +160,7 @@ const StoryScreen = () => {
     const handleGoBack = () => {
         Alert.alert(
             'Leave Adventure?',
-            'Are you sure you want to go back to avatar selection?',
+            'Are you sure you want to go back to avatar selection? Your current progress will be lost.',
             [
                 { text: 'Cancel', style: 'cancel' },
                 {
@@ -124,7 +176,7 @@ const StoryScreen = () => {
         Alert.alert(
             'AI Mode ' + (!useAI ? 'Enabled' : 'Disabled'),
             !useAI
-                ? 'AI mode coming soon!'
+                ? 'AI will now generate unique story paths! Make sure to set your EXPO_PUBLIC_GEMINI_API_KEY in your environment.'
                 : 'Using predefined story paths.'
         );
     };
@@ -134,7 +186,7 @@ const StoryScreen = () => {
             <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color={theme.colors.primary} />
                 <Text style={styles.loadingText}>
-                    {storyType === 'space' ? 'Preparing your space adventure...' : 'Preparing your adventure...'}
+                    {storyType === 'space' ? 'Preparing your space adventure...' : 'Preparing your robot adventure...'}
                 </Text>
             </View>
         );
@@ -244,11 +296,12 @@ const StoryScreen = () => {
 
 const getChoiceColor = (index) => {
     const colors = [
-        'rgba(102, 126, 234, 0.9)', // Purple
-        'rgba(118, 75, 162, 0.9)',  // Deep purple
-        'rgba(76, 175, 80, 0.9)',   // Green
-        'rgba(255, 152, 0, 0.9)',   // Orange
-        'rgba(33, 150, 243, 0.9)',  // Blue
+        'rgba(102, 126, 234, 0.9)',
+        'rgba(118, 75, 162, 0.9)',
+        'rgba(76, 175, 80, 0.9)',
+        'rgba(255, 152, 0, 0.9)',
+        'rgba(33, 150, 243, 0.9)',
+        'rgba(156, 39, 176, 0.9)'
     ];
     return colors[index % colors.length];
 };
@@ -396,8 +449,8 @@ const styles = StyleSheet.create({
         paddingBottom: 45,
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,
-        minHeight: 150,
-        maxHeight: 240,
+        minHeight: 150, // Reduced from 180
+        maxHeight: 240, // Reduced from 280
         shadowColor: '#000',
         shadowOffset: { width: 0, height: -3 },
         shadowOpacity: 0.3,
@@ -448,6 +501,7 @@ const styles = StyleSheet.create({
         textShadowColor: 'rgba(0, 0, 0, 0.8)',
         textShadowOffset: { width: 1, height: 1 },
         textShadowRadius: 2,
+        fontFamily: 'Fredoka_600SemiBold',
         flexWrap: 'wrap',
     },
 });
