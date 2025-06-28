@@ -21,12 +21,12 @@ const stories = [
     {
         id: 'robot',
         title: 'Robo Rescue',
-        img: require('../../assets/robo-rescue.png'), 
+        img: require('../../assets/robo-rescue.png'),
     },
     {
         id: 'math',
         title: 'Math Wizards',
-        img: require('../../assets/math-wizards.png'), 
+        img: require('../../assets/math-wizards.png'),
     },
     {
         id: 'nature2',
@@ -59,6 +59,7 @@ export default function HomeScreen() {
             </View>
             <ScrollView contentContainerStyle={styles.container}>
                 <View style={styles.header}>
+                    <Text style={styles.title}>Welcome to STEM Quest</Text>
                     <Text style={styles.subtitle}>
                         Interactive STEM adventures{'\n'}for curious girls to learn and explore Science, Technology, Engineering, and Math
                     </Text>
@@ -74,10 +75,10 @@ export default function HomeScreen() {
                                 onPress={() => startAdventure(story.id)}
                                 activeOpacity={0.8}
                             >
-                                <View style={styles.tileImageContainer}>
-                                    <Image source={story.img} style={styles.tileImg} />
+                                <Image source={story.img} style={styles.tileImg} />
+                                <View style={styles.titleOverlay}>
+                                    <Text style={styles.tileText}>{story.title}</Text>
                                 </View>
-                                <Text style={styles.tileText}>{story.title}</Text>
                             </TouchableOpacity>
                         ))}
                     </View>
@@ -122,11 +123,11 @@ const styles = StyleSheet.create({
     header: {
         alignItems: 'center',
         marginTop: spacing.lg,
-        marginBottom: spacing.xl * 2,
+        marginBottom: spacing.xl,
         zIndex: 1,
     },
     title: {
-        fontSize: 48,
+        fontSize: 32,
         fontFamily: fonts.titleBold,
         color: '#FFFFFF',
         textAlign: 'center',
@@ -163,10 +164,7 @@ const styles = StyleSheet.create({
         aspectRatio: 0.85,
         backgroundColor: '#FFFFFF',
         borderRadius: 20,
-        padding: spacing.lg,
         marginBottom: spacing.lg,
-        alignItems: 'center',
-        justifyContent: 'space-between',
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
@@ -175,24 +173,34 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 8,
         elevation: 8,
-    },
-    tileImageContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%',
+        overflow: 'hidden',
+        position: 'relative',
     },
     tileImg: {
-        width: 80,
-        height: 80,
-        resizeMode: 'contain',
+        width: '100%',
+        height: '100%',
+        resizeMode: 'cover',
+    },
+    titleOverlay: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        paddingVertical: spacing.sm,
+        paddingHorizontal: spacing.md,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
     },
     tileText: {
         fontSize: 16,
         fontFamily: fonts.button,
-        color: '#2D1B69',
+        color: '#FFFFFF',
         textAlign: 'center',
         lineHeight: 20,
-        marginTop: spacing.sm,
+        fontWeight: 'bold',
+        textShadowColor: 'rgba(0, 0, 0, 0.8)',
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 2,
     },
 });
