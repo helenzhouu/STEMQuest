@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     SafeAreaView,
 } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Text, IconButton } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { spacing, fonts, typography } from '../styles/theme';
 
@@ -40,11 +40,25 @@ export default function HomeScreen() {
     const startAdventure = storyType =>
         navigation.navigate('AvatarSelection', { storyType });
 
+    const goBackToStart = () => {
+        navigation.navigate('Start');
+    };
+
     return (
         <SafeAreaView style={styles.root}>
+            <View style={styles.headerBar}>
+                <IconButton
+                    icon="arrow-left"
+                    iconColor="#FFFFFF"
+                    size={28}
+                    onPress={goBackToStart}
+                    style={styles.backButton}
+                />
+                <Text style={styles.headerTitle}>STEM Quest</Text>
+                <View style={styles.headerSpacer} />
+            </View>
             <ScrollView contentContainerStyle={styles.container}>
                 <View style={styles.header}>
-                    <Text style={styles.title}>STEM Quest</Text>
                     <Text style={styles.subtitle}>
                         Interactive STEM adventures{'\n'}for curious girls to learn and explore Science, Technology, Engineering, and Math
                     </Text>
@@ -78,39 +92,36 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#4A1A7A'
     },
+    headerBar: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: spacing.md,
+        paddingTop: spacing.md,
+        paddingBottom: spacing.sm,
+        backgroundColor: '#4A1A7A',
+    },
+    backButton: {
+        margin: 0,
+    },
+    headerTitle: {
+        fontSize: 24,
+        fontFamily: fonts.titleBold,
+        color: '#FFFFFF',
+        textAlign: 'center',
+    },
+    headerSpacer: {
+        width: 48,
+    },
     container: {
         flex: 1,
         paddingHorizontal: spacing.lg,
-        paddingTop: spacing.xl,
+        paddingTop: spacing.md,
         backgroundColor: 'transparent',
     },
-
-    starsContainer: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        zIndex: 0,
-    },
-    star: {
-        position: 'absolute',
-        fontSize: 20,
-        color: '#FFFFFF',
-        opacity: 0.6,
-    },
-    star1: { top: '15%', left: '10%', fontSize: 16 },
-    star2: { top: '25%', right: '15%', fontSize: 12 },
-    star3: { top: '35%', left: '5%', fontSize: 14 },
-    star4: { top: '45%', right: '8%', fontSize: 18 },
-    star5: { top: '55%', left: '12%', fontSize: 12 },
-    star6: { top: '65%', right: '20%', fontSize: 16 },
-    star7: { top: '75%', left: '8%', fontSize: 14 },
-    star8: { top: '85%', right: '12%', fontSize: 12 },
-
     header: {
         alignItems: 'center',
-        marginTop: spacing.xl,
+        marginTop: spacing.lg,
         marginBottom: spacing.xl * 2,
         zIndex: 1,
     },

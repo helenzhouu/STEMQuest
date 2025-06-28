@@ -11,6 +11,7 @@ import * as SplashScreen from 'expo-splash-screen';
 
 import HomeScreen from './src/screens/HomeScreen';
 import AvatarSelectionScreen from './src/screens/AvatarSelectionScreen';
+import StartScreen from './src/screens/StartScreen';
 import { theme } from './src/styles/theme';
 import { store } from './src/store/store';
 
@@ -43,6 +44,7 @@ export default function App() {
       <PaperProvider theme={theme}>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Start" component={StartScreen} />
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen
               name="AvatarSelection"
