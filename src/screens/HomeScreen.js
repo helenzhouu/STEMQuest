@@ -24,7 +24,7 @@ const stories = [
         img: require('../../assets/icon.png'), // Temporary placeholder
     },
     {
-        id: 'nature1',
+        id: 'math',
         title: 'Math Wizards',
         img: require('../../assets/icon.png'), // Temporary placeholder
     },
