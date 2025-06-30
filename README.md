@@ -1,8 +1,9 @@
-## Getting Started
+## STEMQuest
 
 ### Prerequisites
 - Node.js (v16 or higher)
 - Expo CLI
+- Google Gemini API key
 
 ### Installation
 
@@ -15,6 +16,12 @@ cd stem-quest
 2. Install dependencies:
 ```bash
 npm install
+```
+
+3. Set up your environment variables:
+```bash
+# Create a .env file in the root directory
+GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
 4. Start the development server:

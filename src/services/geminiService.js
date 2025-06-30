@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const GEMINI_API_KEY = process.env.EXPO_PUBLIC_GEMINI_API_KEY;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
 
 export const generateStoryContent = async (prompt, context = {}) => {
     if (!GEMINI_API_KEY) {
-        throw new Error('Gemini API key not configured. Please set EXPO_PUBLIC_GEMINI_API_KEY in your environment.');
+        throw new Error('Gemini API key not configured. Please set GEMINI_API_KEY in your environment.');
     }
 
     try {
