@@ -3,6 +3,7 @@
 ### Prerequisites
 - Node.js (v16 or higher)
 - Expo CLI
+- Firebase Project (for authentication and user data)
 - Google Gemini API key
 
 ### Installation
@@ -18,13 +19,19 @@ cd stem-quest
 npm install
 ```
 
-3. Set up your environment variables:
+3. Set up Firebase:
+   - Create a new Firebase project at https://console.firebase.google.com
+   - Enable Authentication with Email/Password provider
+   - Create a Firestore database
+   - Copy your Firebase config values
+
+4. Configure environment variables:
 ```bash
-# Create a .env file in the root directory
-GEMINI_API_KEY=your_gemini_api_key_here
+cp .env.example .env
+# Edit .env with your Firebase and API configuration values
 ```
 
-4. Start the development server:
+5. Start the development server:
 ```bash
 npm start
 ```
